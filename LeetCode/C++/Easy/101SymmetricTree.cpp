@@ -11,36 +11,37 @@
  */
 class Solution {
 public:
-    void pOTL(TreeNode* node,vector<int>& values){
-        if(node->left != nullptr){
-            pOTL(node->left,values);
+    bool dualTraverse(TreeNode* leftTree, TreeNode* rightTree,bool isSym){
+        if(leftTree->val != rightTree->val){
+            return false;
         }
-        if(node->right != nullptr){
-            pOTL(node->right,values);
+        if(leftTree->left != nullptr){
+            if(rightTree->right != nullptr){
+                isSym = dualTraverse(leftTree->left,rightTree->right,isSym);
+            }
+            else{
+                return false;
+            }
         }
-        values.push_back(node->val);
-        if(node->left == nullptr && node->right != nullptr){
-            values.push_back(101);
-        }else if(node->right == nullptr && node->left != nullptr){
-            values.push_back(-101);
+        else{
+            if(rightTree->right != nullptr){
+                return false;
+            }
         }
-    }
-    void pOTR(TreeNode* node,vector<int>& values){
-        if(node->right != nullptr){
-            pOTR(node->right,values);
+        if(leftTree->right != nullptr){
+            if(rightTree->left != nullptr){
+                isSym = dualTraverse(leftTree->right,rightTree->left,isSym);
+            }
+        }else{
+            if(rightTree->left != nullptr){
+                return false;
+            }
         }
-        if(node->left != nullptr){
-            pOTR(node->left,values);
-        }
-        values.push_back(node->val);
-        if(node->left == nullptr && node->right != nullptr){
-            values.push_back(-101);
-        }else if(node->right == nullptr && node->left != nullptr){
-            values.push_back(101);
-        }
+        return isSym;
     }
 
     bool isSymmetric(TreeNode* root) {
+        bool isSym = true;
         if(root->left == nullptr && root-> right == nullptr){
             return true;
         }else if(root->left == nullptr && root->right !=nullptr){
@@ -49,15 +50,6 @@ public:
         else if(root->right == nullptr && root->left != nullptr){
             return false;
         }
-        vector<int> valuesL;
-        vector<int> valuesR;
-        pOTL(root->left,valuesL);
-        pOTR(root->right,valuesR);
-        for(size_t i = 0; i < valuesL.size(); i++){
-            if(valuesL[i] != valuesR[i]){
-                return false;
-            }
-        }
-        return true;
+        return dualTraverse(root,root,isSym);
     }
 };
