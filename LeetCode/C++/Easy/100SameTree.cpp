@@ -22,7 +22,6 @@ public:
         }
         // check for diffrent values
         if(p->val != q->val){ 
-            cout << "P:" << p->val << "Q:" << q->val << endl;
             return false;
         }
         // check for diffrent structure
