@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int traverse(TreeNode* node, int depth){
+        int lDepth = depth,rDepth = depth;
+    
+        if(node->left != nullptr){
+            lDepth = traverse(node->left,lDepth + 1);
+        }
+        if(node->right != nullptr){
+            rDepth = traverse(node->right,rDepth + 1);
+        }
+        return max(lDepth,rDepth);
+    }
+
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        return traverse(root,1);
+    }
+};
